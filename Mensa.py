@@ -22,7 +22,8 @@ class Mensaplan:
         Erstelle einen Mensaplan, basierend auf der definierten URL im Konstruktor
 
         param self: Verweis auf eigene Klasse, kann mit 
-                    [Mensaplan-Objekt].erstelle_speiseplan() aufgerufen werden.
+                    [Mensaplan-Objekt].erstelle_speiseplan() 
+                    aufgerufen werden.
     '''
     def erstelle_speiseplan(self):
         response   = urllib.request.urlopen(self.__URL)
@@ -38,11 +39,11 @@ class Mensaplan:
 
             
     '''
-    Entferne alle HTML spezifischen Tags, wie <h1><\h1>.
+        Entferne alle HTML spezifischen Tags, wie <h1><\h1>.
 
-    param text:  Verweis auf eigene Klasse
-    param text:  Text mit zu entfernden Tags
-    return:      Text, in dem Tags durch [+++] ersetzt wurden
+        param text:  Verweis auf eigene Klasse
+        param text:  Text mit zu entfernden Tags
+        return:      Text, in dem Tags durch [+++] ersetzt wurden
     '''
     def __entferne_spitze_klammern(self, text):
         start = end = 0
@@ -66,15 +67,15 @@ class Mensaplan:
 
 
     '''
-    Lese die zur Auswahl stehenden Essen
-    eines Tages aus.
+        Lese die zur Auswahl stehenden Essen
+        eines Tages aus.
 
-    param self:  Verweis auf eigene Klasse
-    param essen: HTML [essen] - Sektion
-    return:      Dictionary mit folgendem Format:
-                 {<EssensNr>: [<Deutsch>, <Englisch>]} 
+        param self:  Verweis auf eigene Klasse
+        param essen: HTML [essen] - Sektion
+        return:      Dictionary mit folgendem Format:
+                     {<EssensNr>: [<Deutsch>, <Englisch>]} 
     
-    issue: Manche [mensaSpezial] haben eine unbekannte Struktur
+        issue: Manche [mensaSpezial] haben eine unbekannte Struktur
     ''' 
     def __get_Essen(self, essen):
         essen_dict = {}
@@ -95,10 +96,10 @@ class Mensaplan:
 
 
     '''
-    Lese den Wochentag und das Datum aus.
+        Lese den Wochentag und das Datum aus.
 
-    param tag: HTML [speiseplanTag] - Sektion
-    return:    String in [<Tag> <Datum>] Format
+        param tag: HTML [speiseplanTag] - Sektion
+        return:    String in [<Tag> <Datum>] Format
     '''
     def __get_Tag(self, tag):
         return tag.split("<")[2].split(">")[1]
