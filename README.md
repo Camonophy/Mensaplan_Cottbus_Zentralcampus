@@ -1,3 +1,3 @@
 # Mensaplan_Cottbus_Zentralcampus
 
-Backend file for Amazon Alexa skill
+Back End file for Amazon Alexa skill
