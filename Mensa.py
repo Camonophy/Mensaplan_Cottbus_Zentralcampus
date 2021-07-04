@@ -36,9 +36,7 @@ class Mensaplan:
 
             self.__speiseplan[tag] = gerichte
 
-
-
-    
+            
     '''
     Entferne alle HTML spezifischen Tags, wie <h1><\h1>.
 
