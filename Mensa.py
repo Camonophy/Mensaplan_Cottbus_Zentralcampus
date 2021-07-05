@@ -32,21 +32,20 @@ class Mensaplan:
 
         for menu in tagesMenus:
             tag      = self.__get_Tag(str(menu.find(class_="speiseplanTag")))
-            gerichte = self.__get_Essen(self.__entferne_spitze_klammern(str(menu.findAll(class_="essen"))).split(','))
+            gerichte = self.__get_Essen(self.__entferne_Tags(str(menu.findAll(class_="essen"))).split(','))
 
             self.__speiseplan[tag] = gerichte
 
 
-
     
     '''
-    Entferne alle HTML spezifischen Tags, wie <h1><\h1>.
+        Entferne alle HTML spezifischen Tags, wie <h1><\h1>.
 
-    param text:  Verweis auf eigene Klasse
-    param text:  Text mit zu entfernden Tags
-    return:      Text, in dem Tags durch [+++] ersetzt wurden
+        param text:  Verweis auf eigene Klasse
+        param text:  Text mit zu entfernden Tags
+        return:      Text, in dem Tags durch [+++] ersetzt wurden
     '''
-    def __entferne_spitze_klammern(self, text):
+    def __entferne_Tags(self, text):
         start = end = 0
         text_len = len(text)
 
@@ -66,41 +65,57 @@ class Mensaplan:
 
         return text
 
+    '''
+        Entfernt alle ueberfluessigen eintraege, welche
+        nach dem auslesen der HTML uebrig geblieben sind.
+
+        param self:  Verweis auf eigene Klasse
+        param liste: Liste der Elementen nach dem auslesen
+        return:      Eine Liste mit [<Tag>, <Deutsch>, <Englisch>]
+    '''
+    def __filter_essen(self, liste):
+        gefiltert = []
+
+        for eintrag in liste:
+            if len(eintrag) > 3:
+                gefiltert.append(eintrag) 
+            
+        return gefiltert
+
 
     '''
-    Lese die zur Auswahl stehenden Essen
-    eines Tages aus.
+        Lese die zur Auswahl stehenden Essen
+        eines Tages aus.
 
-    param self:  Verweis auf eigene Klasse
-    param essen: HTML [essen] - Sektion
-    return:      Dictionary mit folgendem Format:
-                 {<EssensNr>: [<Deutsch>, <Englisch>]} 
+        param self:  Verweis auf eigene Klasse
+        param essen: HTML [essen] - Sektion
+        return:      Dictionary mit folgendem Format:
+                     {<EssensNr>: [<Deutsch>, <Englisch>]} 
     
-    issue: Manche [mensaSpezial] haben eine unbekannte Struktur
+        issue: Manche [mensaSpezial] haben eine unbekannte Struktur
     ''' 
     def __get_Essen(self, essen):
         essen_dict = {}
 
         for auswahl in essen:
             split_essen = auswahl.split("+++")
+            split_essen = self.__filter_essen(split_essen)
+            print(split_essen)
             try:
-                # Manche Essenplane unterscheiden sich in ihrer Struktur
-                if len(split_essen[5]) <= 2:
-                    essen_dict[split_essen[1]] = [split_essen[3], split_essen[4][1: len(split_essen[4]) + 1]]
-                else:
-                    essen_dict[split_essen[1]] = [split_essen[3], split_essen[5][2: len(split_essen[5]) + 1]]
+                essen_dict[split_essen[0]] = [split_essen[1], 
+                                              split_essen[2].replace("\r", "")[1: len(split_essen[2]) + 1]]
             except:
-                # [mensaSpezial] ohne bisher zu erkennendes Format
+                # Fehlende [mensaSpezial]
                 continue
 
         return essen_dict
 
 
     '''
-    Lese den Wochentag und das Datum aus.
+        Lese den Wochentag und das Datum aus.
 
-    param tag: HTML [speiseplanTag] - Sektion
-    return:    String in [<Tag> <Datum>] Format
+        param tag: HTML [speiseplanTag] - Sektion
+        return:    String in [<Tag> <Datum>] Format
     '''
     def __get_Tag(self, tag):
         return tag.split("<")[2].split(">")[1]
