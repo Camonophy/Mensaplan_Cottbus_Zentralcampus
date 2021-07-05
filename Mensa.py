@@ -65,23 +65,6 @@ class Mensaplan:
 
         return text
 
-    '''
-        Entfernt alle ueberfluessigen eintraege, welche
-        nach dem auslesen der HTML uebrig geblieben sind.
-
-        param self:  Verweis auf eigene Klasse
-        param liste: Liste der Elementen nach dem auslesen
-        return:      Eine Liste mit [<Tag>, <Deutsch>, <Englisch>]
-    '''
-    def __filter_essen(self, liste):
-        gefiltert = []
-
-        for eintrag in liste:
-            if len(eintrag) > 3:
-                gefiltert.append(eintrag) 
-            
-        return gefiltert
-
 
     '''
         Lese die zur Auswahl stehenden Essen
@@ -99,8 +82,10 @@ class Mensaplan:
 
         for auswahl in essen:
             split_essen = auswahl.split("+++")
-            split_essen = self.__filter_essen(split_essen)
-            print(split_essen)
+
+            # Filter Eintraege, welche keine Bedeutung haben, raus
+            split_essen = [ eintrag for eintrag in split_essen if len(eintrag) > 3 ]
+            
             try:
                 essen_dict[split_essen[0]] = [split_essen[1], 
                                               split_essen[2].replace("\r", "")[1: len(split_essen[2]) + 1]]
