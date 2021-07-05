@@ -22,7 +22,8 @@ class Mensaplan:
         Erstelle einen Mensaplan, basierend auf der definierten URL im Konstruktor
 
         param self: Verweis auf eigene Klasse, kann mit 
-                    [Mensaplan-Objekt].erstelle_speiseplan() aufgerufen werden.
+                    [Mensaplan-Objekt].erstelle_speiseplan() 
+                    aufgerufen werden.
     '''
     def erstelle_speiseplan(self):
         response   = urllib.request.urlopen(self.__URL)
@@ -37,7 +38,6 @@ class Mensaplan:
             self.__speiseplan[tag] = gerichte
 
 
-    
     '''
         Entferne alle HTML spezifischen Tags, wie <h1><\h1>.
 
