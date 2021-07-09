@@ -47,6 +47,22 @@ class Mensaplan:
 
         return text
 
+    
+    '''
+        Ersetze die Kommas im Text, da diese nur zum trennen
+        der Essen vorbehalten sind.
+
+        param self:         Verweis auf eigene Klasse
+        param essens_liste  Liste an HTML-Eintraegen
+        return:             Gefilterte HTML-Eintraegen als String 
+    '''
+    def __ersetze_Kommas(self, essens_liste):
+        neue_essensliste = ""
+
+        for essen in essens_liste:
+            neue_essensliste += str(essen).replace(","," | ") + ","
+        return neue_essensliste
+
 
     '''
         Lese die zur Auswahl stehenden Essen
@@ -72,7 +88,6 @@ class Mensaplan:
                 essen_dict[split_essen[0]] = [split_essen[1], 
                                               split_essen[2].replace("\r", "")[1: len(split_essen[2]) + 1]]
             except:
-                # Fehlende [mensaSpezial]
                 continue
 
         return essen_dict
@@ -114,8 +129,10 @@ class Mensaplan:
         tagesMenus = fullPage.findAll(class_="essenAll")
 
         for menu in tagesMenus:
-            tag      = self.__get_Tag(str(menu.find(class_="speiseplanTag")))
-            gerichte = self.__get_Essen(self.__entferne_Tags(str(menu.findAll(class_="essen"))).split(','))
+            essen_string = self.__ersetze_Kommas(menu.findAll(class_="essen"))
+            essen_string = self.__entferne_Tags(essen_string).split(',')
+            tag          = self.__get_Tag(str(menu.find(class_="speiseplanTag")))
+            gerichte     = self.__get_Essen(essen_string)
 
             self.__speiseplan[tag] = gerichte
 
