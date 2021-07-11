@@ -112,7 +112,10 @@ class Mensaplan:
         heute = datetime.datetime.now()
         heute = datetime.datetime.strftime(heute, '%d.%m')
         tage  = self.__speiseplan.keys()
-        return [ tag for tag in tage if tag[len(tag)-6: len(tag)-1] == heute ][0]
+        try:
+            return [ tag for tag in tage if tag[len(tag)-6: len(tag)-1] == heute ][0]
+        except:
+            return  []
 
 
     '''
@@ -162,14 +165,17 @@ class Mensaplan:
     def print_speiseplan(self, sprache=0, heute=0):
         if heute:
             tag = self.__get_tag_heute()
-            plan = self.__speiseplan[tag]
-            ausgabe = [ "Am " + tag + " gibt es folgendes zur Auswahl: ", \
-                        "There is the following to eat on " + tag + ": " ]
-            print(ausgabe[sprache])
-            for name, inhalt in plan.items():
-                print(name + ": ", end="")
-                print(inhalt[sprache])
-            print()
+            try:
+                plan = self.__speiseplan[tag]
+                ausgabe = [ "Am " + tag + " gibt es folgendes zur Auswahl: ", \
+                            "There is the following to eat on " + tag + ": " ]
+                print(ausgabe[sprache])
+                for name, inhalt in plan.items():
+                    print(name + ": ", end="")
+                    print(inhalt[sprache])
+                print()
+            except:
+                print("Heute gibt es leider nichts zur Auswahl.")
         else:
             for tag, essen in self.__speiseplan.items():
                 ausgabe = [ "Am " + tag + " gibt es folgendes zur Auswahl: ", \
