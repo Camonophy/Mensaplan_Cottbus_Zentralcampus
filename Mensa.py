@@ -151,7 +151,10 @@ class Mensaplan:
         return:      Privates Dictionary, welches den Mensaplan enthaelt
     '''
     def get_speiseplan(self, heute=1):
-        return self.__speiseplan[self.__get_tag_heute()] if heute else self.__speiseplan 
+        try:
+            return self.__speiseplan[self.__get_tag_heute()] if heute else self.__speiseplan 
+        except:
+            return 0
 
     
     '''
@@ -197,3 +200,4 @@ if __name__ == "__main__":
     print()
 
     mensaplan.print_speiseplan(sprache, heute)
+    print(mensaplan.get_speiseplan())
