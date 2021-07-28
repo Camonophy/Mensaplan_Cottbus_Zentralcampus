@@ -38,7 +38,6 @@ class Mensaplan:
                     while end < text_len:
                         if text[end] == '>':
                             text = text.replace(text[start: end + 1], "+++")
-                            start = end - start
                             break
                         end += 1
                 start += 1
@@ -200,4 +199,4 @@ if __name__ == "__main__":
     print()
 
     mensaplan.print_speiseplan(sprache, heute)
-    print(mensaplan.get_speiseplan())
+
